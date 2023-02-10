@@ -1,10 +1,10 @@
-import { vec2 } from "gl-matrix";
-import { BodyInterface } from "rb-phys2d";
+import { vec2 } from 'gl-matrix';
+import { BodyInterface } from 'rb-phys2d';
 
 import {
   BodyEventCollector,
   CollisionEventCollector,
-} from "./host/event-collector";
+} from './host/event-collector';
 
 export enum EventMask {
   CollisionStart = 0x1,

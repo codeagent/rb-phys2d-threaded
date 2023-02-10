@@ -1,4 +1,4 @@
-import { WorkerTask, WorkerTaskResult, isTaskResult } from "./worker-task";
+import { WorkerTask, WorkerTaskResult, isTaskResult } from './worker-task';
 
 export interface TaskQueueEntry {
   task: WorkerTask;
@@ -12,7 +12,7 @@ export class TaskQueue {
   private readonly queue: TaskQueueEntry[] = [];
 
   constructor(private readonly worker: Worker) {
-    this.worker.addEventListener("message", (event) => this.onMessage(event));
+    this.worker.addEventListener('message', event => this.onMessage(event));
   }
 
   enqueue(
@@ -34,7 +34,7 @@ export class TaskQueue {
   ): void {
     if (isTaskResult(event.data)) {
       if (this.queue.length === 0) {
-        console.error("TaskQueue.onMessage: task queue is empty");
+        console.error('TaskQueue.onMessage: task queue is empty');
         return;
       }
 

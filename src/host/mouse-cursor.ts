@@ -1,5 +1,5 @@
-import { vec2 } from "gl-matrix";
-import { MouseControlInterface } from "rb-phys2d";
+import { vec2 } from 'gl-matrix';
+import { MouseControlInterface } from 'rb-phys2d';
 
 export class MouseCursor implements MouseControlInterface {
   private readonly cursor = vec2.create();

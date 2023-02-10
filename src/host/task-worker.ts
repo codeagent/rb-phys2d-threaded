@@ -5,7 +5,7 @@ import {
   JointInterface,
   WorldInterface,
   createWorld,
-} from "rb-phys2d";
+} from 'rb-phys2d';
 
 import {
   AttributeMask,
@@ -14,9 +14,9 @@ import {
   deserializeBody,
   serializeBody,
   serializeEvents,
-} from "../serializing";
-import { createShape } from "../shape-def";
-import { WorkerTask, WorkerTaskResult } from "../task-queue";
+} from '../serializing';
+import { createShape } from '../shape-def';
+import { WorkerTask, WorkerTaskResult } from '../task-queue';
 import {
   AddColliderTask,
   AddDistanceJointTask,
@@ -40,15 +40,15 @@ import {
   ok,
   OnTask,
   OffTask,
-} from "../tasks";
+} from '../tasks';
 
 import {
   BodyEventCollector,
   CollisionEventCollector,
   EventCollectorInterface,
-} from "./event-collector";
-import { Loop } from "./loop";
-import { MouseCursor } from "./mouse-cursor";
+} from './event-collector';
+import { Loop } from './loop';
+import { MouseCursor } from './mouse-cursor';
 
 export class TaskWorker {
   private bodiesBuffer: Float32Array;
@@ -132,7 +132,7 @@ export class TaskWorker {
         return this.off(task as OffTask);
 
       default:
-        return fail(task, new Error("Unknown message"));
+        return fail(task, new Error('Unknown message'));
     }
   }
 
@@ -143,7 +143,7 @@ export class TaskWorker {
         task.settings.maxBodiesNumber * BODY_BUFFER_SAFE_CAPACITY
       );
       this.eventsBuffer = new Float32Array(4);
-      this.loop.start((dt) => this.step(dt), task.settings.step);
+      this.loop.start(dt => this.step(dt), task.settings.step);
 
       return ok(task);
     } catch (error) {
@@ -365,13 +365,14 @@ export class TaskWorker {
   }
 
   addCollider(task: AddColliderTask): WorkerTaskResult {
-    const { body, shape, mask, isVirtual } = task;
+    const { body, shape, mask, isVirtual, material } = task;
 
     this.world.addCollider({
       body: this.world.getBody(body.id),
       shape: createShape(shape),
       mask,
       isVirtual,
+      material,
     });
 
     return ok(task);
@@ -445,8 +446,8 @@ export class TaskWorker {
         new StepMessage(
           this.bodiesBuffer,
           this.eventsBuffer,
-          this.world["clock"].frame,
-          this.world["clock"].time,
+          this.world['clock'].frame,
+          this.world['clock'].time,
           dt
         ),
         {

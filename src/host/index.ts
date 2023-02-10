@@ -1,13 +1,13 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-import { WorkerMessage, isTask } from "../task-queue";
+import { WorkerMessage, isTask } from '../task-queue';
 
-import { TaskWorker } from "./task-worker";
+import { TaskWorker } from './task-worker';
 
 const worker = new TaskWorker();
 
 self.addEventListener(
-  "message",
+  'message',
   <T extends WorkerMessage>(e: MessageEvent<T>) => {
     const message = e.data;
 

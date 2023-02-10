@@ -1,13 +1,13 @@
-import commonjs from "@rollup/plugin-commonjs";
-import resolve from "@rollup/plugin-node-resolve";
-import terser from "@rollup/plugin-terser";
-import typescript from "@rollup/plugin-typescript";
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 
-import pkg from "./package.json";
+import pkg from './package.json';
 
 const onwarn = (warning, warn) => {
   // skip circular dependency warnings
-  if (warning.code === "CIRCULAR_DEPENDENCY") {
+  if (warning.code === 'CIRCULAR_DEPENDENCY') {
     return;
   }
 
@@ -16,7 +16,7 @@ const onwarn = (warning, warn) => {
 
 const stringifySourcePlugin = () => {
   return {
-    name: "stringify-source",
+    name: 'stringify-source',
 
     generateBundle(options, bundle) {
       for (const name in bundle) {
@@ -28,26 +28,26 @@ const stringifySourcePlugin = () => {
   };
 };
 
-export default process.env.BUILD === "worker"
+export default process.env.BUILD === 'worker'
   ? {
-      input: "src/host/index.ts",
-      context: "self",
+      input: 'src/host/index.ts',
+      context: 'self',
       onwarn,
       output: [
         {
           file: `dist/bundle/worker.js`,
-          format: "es",
+          format: 'es',
           sourcemap: true,
         },
         {
           file: `dist/bundle/worker.min.js`,
-          format: "es",
+          format: 'es',
           sourcemap: true,
           plugins: [terser()],
         },
         {
           file: `src/proxy/worker-source.ts`,
-          format: "es",
+          format: 'es',
           sourcemap: false,
           plugins: [stringifySourcePlugin(), terser()],
         },
@@ -55,38 +55,38 @@ export default process.env.BUILD === "worker"
       plugins: [
         resolve(),
         commonjs(),
-        typescript({ tsconfig: __dirname + "/tsconfig.worker.json" }),
+        typescript({ tsconfig: __dirname + '/tsconfig.worker.json' }),
       ],
     }
   : {
-      input: "src/index.ts",
-      context: "self",
+      input: 'src/index.ts',
+      context: 'self',
       onwarn,
       output: [
         {
           file: `dist/bundle/${pkg.name}.js`,
-          format: "iife",
-          name: "rbPhys2dThreaded",
+          format: 'iife',
+          name: 'rbPhys2dThreaded',
           sourcemap: true,
           globals: {
-            "rb-phys2d": "rbPhys2d",
+            'rb-phys2d': 'rbPhys2d',
           },
         },
         {
           file: `dist/bundle/${pkg.name}.min.js`,
-          format: "iife",
-          name: "rbPhys2dThreaded",
+          format: 'iife',
+          name: 'rbPhys2dThreaded',
           sourcemap: true,
           plugins: [terser()],
           globals: {
-            "rb-phys2d": "rbPhys2d",
+            'rb-phys2d': 'rbPhys2d',
           },
         },
       ],
-      external: ["rb-phys2d"],
+      external: ['rb-phys2d'],
       plugins: [
         resolve(),
         commonjs(),
-        typescript({ tsconfig: __dirname + "/tsconfig.esm.json" }),
+        typescript({ tsconfig: __dirname + '/tsconfig.esm.json' }),
       ],
     };

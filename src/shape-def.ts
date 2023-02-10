@@ -1,4 +1,4 @@
-import { vec2 } from "gl-matrix";
+import { vec2 } from 'gl-matrix';
 import {
   Box,
   Capsule,
@@ -8,15 +8,15 @@ import {
   MeshShape,
   Polygon,
   Shape,
-} from "rb-phys2d";
+} from 'rb-phys2d';
 
 export enum ShapeType {
-  Circle = "Circle",
-  Ellipse = "Ellipse",
-  Box = "Box",
-  Capsule = "Capsule",
-  Polygon = "Polygon",
-  Mesh = "Mesh",
+  Circle = 'Circle',
+  Ellipse = 'Ellipse',
+  Box = 'Box',
+  Capsule = 'Capsule',
+  Polygon = 'Polygon',
+  Mesh = 'Mesh',
 }
 
 export interface ShapeDef {
@@ -105,7 +105,7 @@ export const createShapeDef = (shape: Shape): ShapeDef => {
   } else if (shape instanceof MeshShape) {
     return new MeshShapeDef(shape.mesh, shape.transformOrigin);
   } else {
-    throw new Error("Unknown shape");
+    throw new Error('Unknown shape');
   }
 };
 

@@ -1,4 +1,4 @@
-import { BodyInterface, ColliderInterface } from "rb-phys2d";
+import { BodyInterface, ColliderInterface } from 'rb-phys2d';
 
 export interface IdentityInterface {
   readonly id: number;
@@ -7,7 +7,7 @@ export interface IdentityInterface {
 export const identity = (
   entity: BodyInterface | ColliderInterface
 ): IdentityInterface => {
-  return Object.defineProperty({} as IdentityInterface, "id", {
+  return Object.defineProperty({} as IdentityInterface, 'id', {
     enumerable: true,
     get: () => entity.id,
   });

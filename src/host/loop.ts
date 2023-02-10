@@ -3,12 +3,12 @@ export type LoopHandler = (dt: number) => void;
 export class Loop {
   private timer: number;
 
-  private interval: number | "animationFrame";
+  private interval: number | 'animationFrame';
 
-  start(handler: LoopHandler, interval: number | "animationFrame"): void {
+  start(handler: LoopHandler, interval: number | 'animationFrame'): void {
     this.interval = interval;
 
-    if (typeof interval === "string") {
+    if (typeof interval === 'string') {
       const step = () => {
         handler(0.01667);
         self.requestAnimationFrame(step);
@@ -20,7 +20,7 @@ export class Loop {
   }
 
   stop(): void {
-    if (typeof this.interval === "string") {
+    if (typeof this.interval === 'string') {
       self.cancelAnimationFrame(this.timer);
     } else {
       self.clearInterval(this.timer);

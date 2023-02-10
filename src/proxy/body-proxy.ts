@@ -1,15 +1,15 @@
-import { mat3, vec2 } from "gl-matrix";
+import { mat3, vec2 } from 'gl-matrix';
 import {
   BodyInterface,
   ColliderInterface,
   JointInterface,
   affineInverse,
   cross,
-} from "rb-phys2d";
+} from 'rb-phys2d';
 
-import { AttributeMask } from "../serializing";
+import { AttributeMask } from '../serializing';
 
-import { WorldProxy } from "./world-proxy";
+import { WorldProxy } from './world-proxy';
 
 export class BodyProxy implements BodyInterface {
   private readonly r = vec2.create();

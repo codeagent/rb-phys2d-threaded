@@ -1,4 +1,4 @@
-import { vec2 } from "gl-matrix";
+import { vec2 } from 'gl-matrix';
 import {
   BodyDef,
   BodyInterface,
@@ -10,6 +10,7 @@ import {
   EventDispatcher,
   Events,
   JointInterface,
+  Material,
   MotorDef,
   MotorJoint,
   MouseControlInterface,
@@ -26,25 +27,25 @@ import {
   WheelJoint,
   WheelJointDef,
   WorldInterface,
-} from "rb-phys2d";
-import { Inject, Service } from "typedi";
+} from 'rb-phys2d';
+import { Inject, Service } from 'typedi';
 
-import { identity } from "../identity";
+import { identity } from '../identity';
 import {
   BODY_BUFFER_SAFE_CAPACITY,
   EventMask,
   deserializeBody,
   serializeBody,
-} from "../serializing";
-import { Settings } from "../settings";
-import { createShapeDef } from "../shape-def";
+} from '../serializing';
+import { Settings } from '../settings';
+import { createShapeDef } from '../shape-def';
 import {
   TaskQueue,
   WorkerMessage,
   WorkerTask,
   WorkerTaskResult,
   isSuccess,
-} from "../task-queue";
+} from '../task-queue';
 import {
   AddColliderTask,
   AddDistanceJointTask,
@@ -65,10 +66,10 @@ import {
   StepMessage,
   OnTask,
   OffTask,
-} from "../tasks";
+} from '../tasks';
 
-import { BodyProxy } from "./body-proxy";
-import WORKER_SOURCE from "./worker-source";
+import { BodyProxy } from './body-proxy';
+import WORKER_SOURCE from './worker-source';
 
 @Service()
 export class WorldProxy implements WorldInterface {
@@ -87,11 +88,11 @@ export class WorldProxy implements WorldInterface {
   private readonly cursor = vec2.create();
 
   constructor(
-    @Inject("SETTINGS") public readonly settings: Readonly<Settings>,
+    @Inject('SETTINGS') public readonly settings: Readonly<Settings>,
     private readonly dispatcher: EventDispatcher
   ) {
     this.worker = this.createWorker(settings);
-    this.worker.addEventListener("message", (event) => this.onMessage(event));
+    this.worker.addEventListener('message', event => this.onMessage(event));
     this.taskQueue = new TaskQueue(this.worker);
     this.taskQueue.enqueue(new CreateWorldTask(settings));
     this.attributesBuffer = new Float32Array(
@@ -399,27 +400,41 @@ export class WorldProxy implements WorldInterface {
   }
 
   addCollider(colliderDef: ColliderDef): ColliderInterface {
+    const materialDef = {
+      ...this.settings.defaultMaterial,
+      ...(colliderDef.material ?? {}),
+    };
+
+    const material = new Material(
+      materialDef.friction,
+      materialDef.restitution,
+      materialDef.damping,
+      materialDef.angularDamping
+    );
+
     const collider = new Collider(
       colliderDef.body,
       colliderDef.shape,
       colliderDef.mask ?? 0xffffffff,
-      colliderDef.isVirtual ?? false
+      colliderDef.isVirtual ?? false,
+      material
     );
+
+    Object.assign(collider.body, { collider });
 
     this.taskQueue.enqueue(
       new AddColliderTask(
         identity(collider),
         createShapeDef(collider.shape),
         collider.mask,
-        collider.virtual
+        collider.virtual,
+        materialDef
       ),
       [],
       () => {
         this.dispatch(Events.ColliderAdded, collider, collider.body);
       }
     );
-
-    Object.assign(collider.body, { collider });
 
     return collider;
   }
@@ -485,7 +500,7 @@ export class WorldProxy implements WorldInterface {
       return new Worker(settings.workerUrl);
     } else {
       const blob = new Blob([WORKER_SOURCE], {
-        type: "application/javascript",
+        type: 'application/javascript',
       });
       const url = URL.createObjectURL(blob);
       return new Worker(url);
@@ -493,7 +508,7 @@ export class WorldProxy implements WorldInterface {
   }
 
   private onMessage(event: MessageEvent<WorkerMessage>): void {
-    if (event.data.name === "Step") {
+    if (event.data.name === 'Step') {
       return this.onStep(event.data as StepMessage);
     }
 
@@ -509,7 +524,7 @@ export class WorldProxy implements WorldInterface {
       this.bodies.set(body.id, body);
       this.dispatch(Events.BodyCreated, body);
     } else {
-      console.warn("WorldProxy: Failed to create body: ", result.error);
+      console.warn('WorldProxy: Failed to create body: ', result.error);
     }
   }
 
@@ -526,7 +541,7 @@ export class WorldProxy implements WorldInterface {
 
       this.dispatch(Events.BodyDestroyed, body);
     } else {
-      console.warn("WorldProxy: Failed to destroy body: ", result.error);
+      console.warn('WorldProxy: Failed to destroy body: ', result.error);
     }
   }
 
@@ -538,7 +553,7 @@ export class WorldProxy implements WorldInterface {
       this.joints.set(joint, result.result);
       this.dispatch(Events.JointAdded, joint);
     } else {
-      console.warn("WorldProxy: Failed to create joint: ", result.error);
+      console.warn('WorldProxy: Failed to create joint: ', result.error);
     }
   }
 

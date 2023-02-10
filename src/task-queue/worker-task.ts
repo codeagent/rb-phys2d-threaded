@@ -17,14 +17,14 @@ export interface WorkerTaskResult<
 }
 
 export const isTask = (message: WorkerMessage): message is WorkerTask =>
-  message && "taskId" in message;
+  message && 'taskId' in message;
 
 export const isTaskResult = (
   message: WorkerMessage
 ): message is WorkerTaskResult =>
-  message && ("result" in message || "error" in message);
+  message && ('result' in message || 'error' in message);
 
 export const isSuccess = (result: WorkerTaskResult): boolean =>
-  "result" in result;
+  'result' in result;
 
-export const isFail = (result: WorkerTaskResult): boolean => "error" in result;
+export const isFail = (result: WorkerTaskResult): boolean => 'error' in result;

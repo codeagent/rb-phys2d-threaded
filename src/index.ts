@@ -1,10 +1,10 @@
-import { EventDispatcher, WorldInterface } from "rb-phys2d";
-import { Container, ContainerInstance } from "typedi";
+import { EventDispatcher, WorldInterface } from 'rb-phys2d';
+import { Container, ContainerInstance } from 'typedi';
 
-import { WorldProxy } from "./proxy";
-import { Settings, defaultSettings } from "./settings";
+import { WorldProxy } from './proxy';
+import { Settings, defaultSettings } from './settings';
 
-export * from "./proxy";
+export * from './proxy';
 export { Settings, defaultSettings };
 
 export const configureContainer = (
@@ -14,8 +14,8 @@ export const configureContainer = (
 
   const container = Container.of(settings.uid);
 
-  container.set({ id: "SETTINGS", value: settings });
-  container.set({ id: "WORLD", type: WorldProxy });
+  container.set({ id: 'SETTINGS', value: settings });
+  container.set({ id: 'WORLD', type: WorldProxy });
   container.set({ id: EventDispatcher, type: EventDispatcher });
 
   return container;
@@ -24,7 +24,7 @@ export const configureContainer = (
 export const createWorld = (
   settings: Partial<Settings> = {}
 ): WorldInterface => {
-  return configureContainer(settings).get("WORLD");
+  return configureContainer(settings).get('WORLD');
 };
 
 export const destroyWorld = (world: WorldInterface) => {

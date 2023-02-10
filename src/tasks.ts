@@ -1,31 +1,31 @@
-import { vec2 } from "gl-matrix";
-import { BodyDef, Events } from "rb-phys2d";
+import { vec2 } from 'gl-matrix';
+import { BodyDef, Events, MaterialDef } from 'rb-phys2d';
 
-import { IdentityInterface } from "./identity";
-import { Settings } from "./settings";
-import { ShapeDef } from "./shape-def";
-import { WorkerMessage, WorkerTask, WorkerTaskResult } from "./task-queue";
+import { IdentityInterface } from './identity';
+import { Settings } from './settings';
+import { ShapeDef } from './shape-def';
+import { WorkerMessage, WorkerTask, WorkerTaskResult } from './task-queue';
 
 export enum TaskName {
-  CreateWorld = "CreateWorld",
-  CreateBody = "CreateBody",
-  DestroyBody = "DestroyBody",
-  AddDistanceJoint = "AddDistanceJoint",
-  AddPrismaticJoint = "AddPrismaticJoint",
-  AddRevoluteJoint = "AddRevoluteJoint",
-  AddWeldJoint = "AddWeldJoint",
-  AddWheelJoint = "AddWheelJoint",
-  AddSpring = "AddSpring",
-  AddMouseJoint = "AddMouseJoint",
-  AddMotor = "AddMotor",
-  RemoveJoint = "RemoveJoint",
-  AddCollider = "AddCollider",
-  RemoveCollider = "RemoveCollider",
-  UpdateTransform = "UpdateTransform",
-  Clear = "Clear",
-  Return = "Return",
-  On = "On",
-  Off = "Off",
+  CreateWorld = 'CreateWorld',
+  CreateBody = 'CreateBody',
+  DestroyBody = 'DestroyBody',
+  AddDistanceJoint = 'AddDistanceJoint',
+  AddPrismaticJoint = 'AddPrismaticJoint',
+  AddRevoluteJoint = 'AddRevoluteJoint',
+  AddWeldJoint = 'AddWeldJoint',
+  AddWheelJoint = 'AddWheelJoint',
+  AddSpring = 'AddSpring',
+  AddMouseJoint = 'AddMouseJoint',
+  AddMotor = 'AddMotor',
+  RemoveJoint = 'RemoveJoint',
+  AddCollider = 'AddCollider',
+  RemoveCollider = 'RemoveCollider',
+  UpdateTransform = 'UpdateTransform',
+  Clear = 'Clear',
+  Return = 'Return',
+  On = 'On',
+  Off = 'Off',
 }
 
 export class CreateWorldTask implements WorkerTask {
@@ -163,7 +163,8 @@ export class AddColliderTask implements WorkerTask {
     public readonly body: IdentityInterface,
     public readonly shape: ShapeDef,
     public readonly mask: number,
-    public readonly isVirtual: boolean
+    public readonly isVirtual: boolean,
+    public readonly material: MaterialDef
   ) {}
 }
 
@@ -205,7 +206,7 @@ export class OffTask implements WorkerTask {
 }
 
 export class StepMessage implements WorkerMessage {
-  readonly name = "Step";
+  readonly name = 'Step';
 
   constructor(
     public readonly bodiesBuffer: Float32Array,
@@ -218,7 +219,7 @@ export class StepMessage implements WorkerMessage {
 
 export const ok = <T extends WorkerTask>(
   task: T,
-  result: unknown = "ok"
+  result: unknown = 'ok'
 ): WorkerTaskResult<T> => {
   return {
     name: `${task.name}Result`,

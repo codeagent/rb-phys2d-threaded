@@ -1,2 +1,2 @@
-export * from "./body-proxy";
-export * from "./world-proxy";
+export * from './body-proxy';
+export * from './world-proxy';
