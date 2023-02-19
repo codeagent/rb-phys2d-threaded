@@ -9,7 +9,7 @@ export class Loop {
     this.interval = interval;
 
     if (typeof interval === 'string') {
-      const step = () => {
+      const step = (): void => {
         handler(0.01667);
         self.requestAnimationFrame(step);
       };

@@ -175,7 +175,7 @@ export const serializeEvents = <T = unknown>(
   buffer: Float32Array,
   offset: number,
   collection: Readonly<Iterable<T>>
-) => {
+): number => {
   const start = offset;
 
   if (collection instanceof BodyEventCollector) {

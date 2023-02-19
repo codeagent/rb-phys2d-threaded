@@ -2,8 +2,8 @@ import { WorkerTask, WorkerTaskResult, isTaskResult } from './worker-task';
 
 export interface TaskQueueEntry {
   task: WorkerTask;
-  onTaskResult?(task: WorkerTaskResult): void;
   transfer?: Transferable[];
+  onTaskResult?(task: WorkerTaskResult): void;
 }
 
 export class TaskQueue {

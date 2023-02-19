@@ -26,7 +26,7 @@ export interface ShapeDef {
 export class CircleShapeDef implements ShapeDef {
   readonly type = ShapeType.Circle;
 
-  constructor(public readonly radius: number) {}
+  constructor(readonly radius: number) {}
 }
 
 export const isCircle = (shapeDef: ShapeDef): shapeDef is CircleShapeDef =>
@@ -36,9 +36,9 @@ export class EllipseShapeDef implements ShapeDef {
   readonly type = ShapeType.Ellipse;
 
   constructor(
-    public readonly a: number,
-    public readonly b: number,
-    public readonly subdivisions: number
+    readonly a: number,
+    readonly b: number,
+    readonly subdivisions: number
   ) {}
 }
 
@@ -48,7 +48,7 @@ export const isEllipse = (shapeDef: ShapeDef): shapeDef is EllipseShapeDef =>
 export class BoxShapeDef implements ShapeDef {
   readonly type = ShapeType.Box;
 
-  constructor(public readonly width: number, public readonly height: number) {}
+  constructor(readonly width: number, readonly height: number) {}
 }
 
 export const isBox = (shapeDef: ShapeDef): shapeDef is BoxShapeDef =>
@@ -58,9 +58,9 @@ export class CapsuleShapeDef implements ShapeDef {
   readonly type = ShapeType.Capsule;
 
   constructor(
-    public readonly radius: number,
-    public readonly height: number,
-    public readonly subdivisions: number
+    readonly radius: number,
+    readonly height: number,
+    readonly subdivisions: number
   ) {}
 }
 
@@ -71,8 +71,8 @@ export class PolygonShapeDef implements ShapeDef {
   readonly type = ShapeType.Polygon;
 
   constructor(
-    public readonly points: Readonly<vec2[]>,
-    public readonly transformOrigin: boolean
+    readonly points: Readonly<vec2[]>,
+    readonly transformOrigin: boolean
   ) {}
 }
 
@@ -83,8 +83,8 @@ export class MeshShapeDef implements ShapeDef {
   readonly type = ShapeType.Mesh;
 
   constructor(
-    public readonly mesh: Readonly<Mesh>,
-    public readonly transformOrigin: boolean
+    readonly mesh: Readonly<Mesh>,
+    readonly transformOrigin: boolean
   ) {}
 }
 

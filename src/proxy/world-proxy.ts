@@ -88,7 +88,7 @@ export class WorldProxy implements WorldInterface {
   private readonly cursor = vec2.create();
 
   constructor(
-    @Inject('SETTINGS') public readonly settings: Readonly<Settings>,
+    @Inject('SETTINGS') readonly settings: Readonly<Settings>,
     private readonly dispatcher: EventDispatcher
   ) {
     this.worker = this.createWorker(settings);
@@ -487,7 +487,7 @@ export class WorldProxy implements WorldInterface {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   step(): void {}
 
-  terminate() {
+  terminate(): void {
     this.worker.terminate();
   }
 
@@ -518,7 +518,7 @@ export class WorldProxy implements WorldInterface {
   private onBodyCreated(
     result: WorkerTaskResult<CreateBodyTask, number>,
     body: BodyProxy
-  ) {
+  ): void {
     if (isSuccess(result)) {
       body.id = result.result;
       this.bodies.set(body.id, body);
@@ -531,7 +531,7 @@ export class WorldProxy implements WorldInterface {
   private onBodyDestroyed(
     result: WorkerTaskResult<DestroyBodyTask, unknown>,
     body: BodyInterface
-  ) {
+  ): void {
     if (isSuccess(result)) {
       this.bodies.delete(body.id);
 
@@ -548,7 +548,7 @@ export class WorldProxy implements WorldInterface {
   private onJointAdded(
     result: WorkerTaskResult<WorkerTask, number>,
     joint: JointInterface
-  ) {
+  ): void {
     if (isSuccess(result)) {
       this.joints.set(joint, result.result);
       this.dispatch(Events.JointAdded, joint);
@@ -560,7 +560,7 @@ export class WorldProxy implements WorldInterface {
   private onJointRemoved(
     result: WorkerTaskResult<RemoveJointTask, number>,
     joint: JointInterface
-  ) {
+  ): void {
     if (isSuccess(result)) {
       this.joints.delete(joint);
 
@@ -624,7 +624,7 @@ export class WorldProxy implements WorldInterface {
     }
   }
 
-  public serializeEvents(message: StepMessage): void {
+  private serializeEvents(message: StepMessage): void {
     let offset = 0;
 
     if (this.mouseControl) {

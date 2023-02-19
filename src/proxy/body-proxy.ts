@@ -12,8 +12,6 @@ import { AttributeMask } from '../serializing';
 import { WorldProxy } from './world-proxy';
 
 export class BodyProxy implements BodyInterface {
-  private readonly r = vec2.create();
-
   id = 0;
 
   islandId = 0;
@@ -21,84 +19,6 @@ export class BodyProxy implements BodyInterface {
   transform = mat3.create();
 
   invTransform = mat3.create();
-
-  get position(): Readonly<vec2> {
-    return this._position;
-  }
-
-  set position(position: Readonly<vec2>) {
-    vec2.copy(this._position, position);
-    this._attributeMask |= AttributeMask.Position;
-  }
-
-  get angle(): number {
-    return this._angle;
-  }
-
-  set angle(angle: number) {
-    this._angle = angle;
-    this._attributeMask |= AttributeMask.Angle;
-  }
-
-  get velocity(): Readonly<vec2> {
-    return this._velocity;
-  }
-
-  set velocity(velocity: Readonly<vec2>) {
-    vec2.copy(this._velocity, velocity);
-    this._attributeMask |= AttributeMask.Velocity;
-  }
-
-  get omega(): number {
-    return this._omega;
-  }
-
-  set omega(omega: number) {
-    this._omega = omega;
-    this._attributeMask |= AttributeMask.Omega;
-  }
-
-  get force(): Readonly<vec2> {
-    return this._force;
-  }
-
-  set force(force: Readonly<vec2>) {
-    vec2.copy(this._force, force);
-    this._attributeMask |= AttributeMask.Force;
-  }
-
-  get torque(): number {
-    return this._torque;
-  }
-
-  set torque(torque: number) {
-    this._torque = torque;
-    this._attributeMask |= AttributeMask.Torque;
-  }
-
-  get mass(): number {
-    return this._mass;
-  }
-
-  set mass(mass: number) {
-    this._mass = mass;
-    this.invMass = 1.0 / mass;
-    this.isStatic =
-      !Number.isFinite(this._mass) && !Number.isFinite(this._inertia);
-    this._attributeMask |= AttributeMask.Mass;
-  }
-
-  get inertia(): number {
-    return this._inertia;
-  }
-
-  set inertia(inertia: number) {
-    this._inertia = inertia;
-    this.invInertia = 1.0 / inertia;
-    this.isStatic =
-      !Number.isFinite(this._mass) && !Number.isFinite(this._inertia);
-    this._attributeMask |= AttributeMask.Inertia;
-  }
 
   invMass = 0.0;
 
@@ -132,10 +52,87 @@ export class BodyProxy implements BodyInterface {
 
   private _inertia = 0.0;
 
-  constructor(
-    public readonly world: WorldProxy,
-    public readonly continuous: boolean
-  ) {}
+  private readonly r = vec2.create();
+
+  constructor(readonly world: WorldProxy, readonly continuous: boolean) {}
+
+  get position(): Readonly<vec2> {
+    return this._position;
+  }
+
+  get angle(): number {
+    return this._angle;
+  }
+
+  get velocity(): Readonly<vec2> {
+    return this._velocity;
+  }
+
+  get omega(): number {
+    return this._omega;
+  }
+
+  get force(): Readonly<vec2> {
+    return this._force;
+  }
+
+  get torque(): number {
+    return this._torque;
+  }
+
+  get mass(): number {
+    return this._mass;
+  }
+
+  get inertia(): number {
+    return this._inertia;
+  }
+
+  set position(position: Readonly<vec2>) {
+    vec2.copy(this._position, position);
+    this._attributeMask |= AttributeMask.Position;
+  }
+
+  set angle(angle: number) {
+    this._angle = angle;
+    this._attributeMask |= AttributeMask.Angle;
+  }
+
+  set velocity(velocity: Readonly<vec2>) {
+    vec2.copy(this._velocity, velocity);
+    this._attributeMask |= AttributeMask.Velocity;
+  }
+
+  set omega(omega: number) {
+    this._omega = omega;
+    this._attributeMask |= AttributeMask.Omega;
+  }
+
+  set force(force: Readonly<vec2>) {
+    vec2.copy(this._force, force);
+    this._attributeMask |= AttributeMask.Force;
+  }
+
+  set torque(torque: number) {
+    this._torque = torque;
+    this._attributeMask |= AttributeMask.Torque;
+  }
+
+  set mass(mass: number) {
+    this._mass = mass;
+    this.invMass = 1.0 / mass;
+    this.isStatic =
+      !Number.isFinite(this._mass) && !Number.isFinite(this._inertia);
+    this._attributeMask |= AttributeMask.Mass;
+  }
+
+  set inertia(inertia: number) {
+    this._inertia = inertia;
+    this.invInertia = 1.0 / inertia;
+    this.isStatic =
+      !Number.isFinite(this._mass) && !Number.isFinite(this._inertia);
+    this._attributeMask |= AttributeMask.Inertia;
+  }
 
   addJoint(joint: JointInterface): void {
     this.joints.add(joint);

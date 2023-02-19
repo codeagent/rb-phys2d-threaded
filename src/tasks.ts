@@ -31,30 +31,30 @@ export enum TaskName {
 export class CreateWorldTask implements WorkerTask {
   readonly name = TaskName.CreateWorld;
 
-  constructor(public readonly settings: Readonly<Settings>) {}
+  constructor(readonly settings: Readonly<Settings>) {}
 }
 
 export class CreateBodyTask implements WorkerTask {
   readonly name = TaskName.CreateBody;
 
-  constructor(public readonly bodyDef: Readonly<BodyDef>) {}
+  constructor(readonly bodyDef: Readonly<BodyDef>) {}
 }
 
 export class DestroyBodyTask implements WorkerTask {
   readonly name = TaskName.DestroyBody;
 
-  constructor(public readonly body: IdentityInterface) {}
+  constructor(readonly body: IdentityInterface) {}
 }
 
 export class AddDistanceJointTask implements WorkerTask {
   readonly name = TaskName.AddDistanceJoint;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly distance: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly distance: number
   ) {}
 }
 
@@ -62,14 +62,14 @@ export class AddPrismaticJointTask implements WorkerTask {
   readonly name = TaskName.AddPrismaticJoint;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly localAxis: Readonly<vec2>,
-    public readonly refAngle: number,
-    public readonly minDistance: number,
-    public readonly maxDistance: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly localAxis: Readonly<vec2>,
+    readonly refAngle: number,
+    readonly minDistance: number,
+    readonly maxDistance: number
   ) {}
 }
 
@@ -77,14 +77,14 @@ export class AddRevoluteJointTask implements WorkerTask {
   readonly name = TaskName.AddRevoluteJoint;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly minAngle: number,
-    public readonly maxAngle: number,
-    public readonly stiffness: number,
-    public readonly damping: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly minAngle: number,
+    readonly maxAngle: number,
+    readonly stiffness: number,
+    readonly damping: number
   ) {}
 }
 
@@ -92,11 +92,11 @@ export class AddWeldJointTask implements WorkerTask {
   readonly name = TaskName.AddWeldJoint;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly refAngle: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly refAngle: number
   ) {}
 }
 
@@ -104,13 +104,13 @@ export class AddWheelJointTask implements WorkerTask {
   readonly name = TaskName.AddWheelJoint;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly localAxis: Readonly<vec2>,
-    public readonly minDistance: number,
-    public readonly maxDistance: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly localAxis: Readonly<vec2>,
+    readonly minDistance: number,
+    readonly maxDistance: number
   ) {}
 }
 
@@ -118,13 +118,13 @@ export class AddSpringTask implements WorkerTask {
   readonly name = TaskName.AddSpring;
 
   constructor(
-    public readonly bodyA: IdentityInterface,
-    public readonly pivotA: Readonly<vec2>,
-    public readonly bodyB: IdentityInterface,
-    public readonly pivotB: Readonly<vec2>,
-    public readonly distance: number,
-    public readonly stiffness: number,
-    public readonly extinction: number
+    readonly bodyA: IdentityInterface,
+    readonly pivotA: Readonly<vec2>,
+    readonly bodyB: IdentityInterface,
+    readonly pivotB: Readonly<vec2>,
+    readonly distance: number,
+    readonly stiffness: number,
+    readonly extinction: number
   ) {}
 }
 
@@ -132,11 +132,11 @@ export class AddMouseJointTask implements WorkerTask {
   readonly name = TaskName.AddMouseJoint;
 
   constructor(
-    public readonly cursor: Readonly<vec2>,
-    public readonly body: IdentityInterface,
-    public readonly joint: Readonly<vec2>,
-    public readonly stiffness: number,
-    public readonly maxForce: number
+    readonly cursor: Readonly<vec2>,
+    readonly body: IdentityInterface,
+    readonly joint: Readonly<vec2>,
+    readonly stiffness: number,
+    readonly maxForce: number
   ) {}
 }
 
@@ -144,34 +144,34 @@ export class AddMotorTask implements WorkerTask {
   readonly name = TaskName.AddMotor;
 
   constructor(
-    public readonly body: IdentityInterface,
-    public readonly speed: number,
-    public readonly torque: number
+    readonly body: IdentityInterface,
+    readonly speed: number,
+    readonly torque: number
   ) {}
 }
 
 export class RemoveJointTask implements WorkerTask {
   readonly name = TaskName.RemoveJoint;
 
-  constructor(public readonly jointId: number) {}
+  constructor(readonly jointId: number) {}
 }
 
 export class AddColliderTask implements WorkerTask {
   readonly name = TaskName.AddCollider;
 
   constructor(
-    public readonly body: IdentityInterface,
-    public readonly shape: ShapeDef,
-    public readonly mask: number,
-    public readonly isVirtual: boolean,
-    public readonly material: MaterialDef
+    readonly body: IdentityInterface,
+    readonly shape: ShapeDef,
+    readonly mask: number,
+    readonly isVirtual: boolean,
+    readonly material: MaterialDef
   ) {}
 }
 
 export class RemoveColliderTask implements WorkerTask {
   readonly name = TaskName.RemoveCollider;
 
-  constructor(public readonly collider: IdentityInterface) {}
+  constructor(readonly collider: IdentityInterface) {}
 }
 
 export class ClearTask implements WorkerTask {
@@ -188,32 +188,32 @@ export class ReturnTask implements WorkerTask {
   readonly taskId = -1; // synthetic task id
 
   constructor(
-    public readonly bodiesBuffer: Float32Array,
-    public readonly eventsBuffer: Float32Array
+    readonly bodiesBuffer: Float32Array,
+    readonly eventsBuffer: Float32Array
   ) {}
 }
 
 export class OnTask implements WorkerTask {
   readonly name = TaskName.On;
 
-  constructor(public readonly event: keyof typeof Events) {}
+  constructor(readonly event: keyof typeof Events) {}
 }
 
 export class OffTask implements WorkerTask {
   readonly name = TaskName.Off;
 
-  constructor(public readonly event: keyof typeof Events) {}
+  constructor(readonly event: keyof typeof Events) {}
 }
 
 export class StepMessage implements WorkerMessage {
   readonly name = 'Step';
 
   constructor(
-    public readonly bodiesBuffer: Float32Array,
-    public readonly eventsBuffer: Float32Array,
-    public readonly frame: number,
-    public readonly time: number,
-    public readonly dt: number
+    readonly bodiesBuffer: Float32Array,
+    readonly eventsBuffer: Float32Array,
+    readonly frame: number,
+    readonly time: number,
+    readonly dt: number
   ) {}
 }
 

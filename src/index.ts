@@ -27,11 +27,11 @@ export const createWorld = (
   return configureContainer(settings).get('WORLD');
 };
 
-export const destroyWorld = (world: WorldInterface) => {
+export const destroyWorld = (world: WorldInterface): Container => {
   if (world instanceof WorldProxy) {
     world.terminate();
   }
 
   world.clear();
-  Container.reset(world.settings.uid);
+  return Container.reset(world.settings.uid);
 };

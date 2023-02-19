@@ -6,7 +6,7 @@ import {
 } from 'rb-phys2d';
 
 export interface EventCollectorInterface<T = unknown> extends Iterable<T> {
-  readonly listening: boolean;
+  readonly collecting: boolean;
   listen(world: WorldInterface): void;
   stop(): void;
   reset(): void;
@@ -15,16 +15,13 @@ export interface EventCollectorInterface<T = unknown> extends Iterable<T> {
 export abstract class EventCollector<T> implements EventCollectorInterface<T> {
   protected readonly collection = new Set<T>();
 
-  protected readonly listener = (...args: unknown[]) =>
-    this.addToCollection(...args);
-
   protected world: WorldInterface;
 
-  get listening() {
+  constructor(readonly event: keyof typeof Events) {}
+
+  get collecting(): boolean {
     return Boolean(this.world);
   }
-
-  constructor(public readonly event: keyof typeof Events) {}
 
   listen(world: WorldInterface): void {
     if (!this.world) {
@@ -45,6 +42,9 @@ export abstract class EventCollector<T> implements EventCollectorInterface<T> {
   *[Symbol.iterator](): Iterator<T> {
     yield* this.collection;
   }
+
+  protected readonly listener = (...args: unknown[]): void =>
+    this.addToCollection(...args);
 
   protected abstract addToCollection(...args: unknown[]): void;
 }

@@ -409,7 +409,7 @@ export class TaskWorker {
   on(task: OnTask): WorkerTaskResult {
     const collector = this.eventCollectors.get(task.event);
 
-    if (collector && !collector.listening) {
+    if (collector && !collector.collecting) {
       collector.listen(this.world);
       this.eventsBuffer = new Float32Array(this.getEventBufferSize());
     }
@@ -420,7 +420,7 @@ export class TaskWorker {
   off(task: OffTask): WorkerTaskResult {
     const collector = this.eventCollectors.get(task.event);
 
-    if (collector && collector.listening) {
+    if (collector && collector.collecting) {
       collector.stop();
       this.eventsBuffer = new Float32Array(this.getEventBufferSize());
     }
@@ -461,7 +461,7 @@ export class TaskWorker {
     let size = 1;
 
     for (const [eventName, collector] of this.eventCollectors) {
-      if (!collector.listening) {
+      if (!collector.collecting) {
         continue;
       }
 
