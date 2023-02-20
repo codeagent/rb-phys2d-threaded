@@ -17,6 +17,7 @@ jobs:
           node-version: 'lts/*'
           registry-url: https://registry.npmjs.org/
       - run: npm ci --ignore-scripts
+      - run: npm run build:worker
       - run: npm run build:esm
       - run: npm run build:cjs
       - run: npm run build:types

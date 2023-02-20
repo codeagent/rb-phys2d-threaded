@@ -84,7 +84,8 @@ export class AddRevoluteJointTask implements WorkerTask {
     readonly minAngle: number,
     readonly maxAngle: number,
     readonly stiffness: number,
-    readonly damping: number
+    readonly damping: number,
+    readonly contacts: boolean
   ) {}
 }
 

@@ -223,6 +223,7 @@ export class TaskWorker {
       maxAngle,
       stiffness,
       damping,
+      contacts,
     } = task;
 
     const joint = this.world.addRevoluteJoint({
@@ -234,6 +235,7 @@ export class TaskWorker {
       maxAngle,
       stiffness,
       damping,
+      contacts,
     });
     const id = this.idManager.getUniqueId();
 

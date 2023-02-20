@@ -5,6 +5,9 @@ import typescript from '@rollup/plugin-typescript';
 
 import pkg from './package.json';
 
+const bundleName = 'rbPhys2dThreaded';
+const workerSourceBundleName = 'rbPhys2dWorkerSource';
+
 const onwarn = (warning, warn) => {
   // skip circular dependency warnings
   if (warning.code === 'CIRCULAR_DEPENDENCY') {
@@ -14,18 +17,36 @@ const onwarn = (warning, warn) => {
   warn(warning);
 };
 
-const stringifySourcePlugin = () => {
+const stringifySourcePlugin = (options = {}) => {
   return {
     name: 'stringify-source',
 
-    generateBundle(options, bundle) {
-      for (const name in bundle) {
-        bundle[name].code = `export default ${JSON.stringify(
-          bundle[name].code
-        )};`;
+    generateBundle(_, bundle) {
+      if (options.es5) {
+        for (const name in bundle) {
+          bundle[name].code = `var ${options.name} = ${JSON.stringify(
+            bundle[name].code
+          )};`;
+        }
+      } else {
+        for (const name in bundle) {
+          bundle[name].code = `export default ${JSON.stringify(
+            bundle[name].code
+          )} as string;`;
+        }
       }
     },
   };
+};
+
+const globals = global => {
+  if (global === 'rb-phys2d') {
+    return 'rbPhys2d';
+  } else if (global.includes('worker-source')) {
+    return workerSourceBundleName;
+  } else {
+    return global;
+  }
 };
 
 export default process.env.BUILD === 'worker'
@@ -34,6 +55,19 @@ export default process.env.BUILD === 'worker'
       context: 'self',
       onwarn,
       output: [
+        {
+          file: `dist/bundle/rb-phys2d-worker-source.js`,
+          format: 'iife',
+          plugins: [
+            stringifySourcePlugin({ name: workerSourceBundleName, es5: true }),
+          ],
+        },
+        {
+          file: `src/proxy/worker-source.ts`,
+          format: 'es',
+          sourcemap: false,
+          plugins: [stringifySourcePlugin(), terser()],
+        },
         {
           file: `dist/bundle/worker.js`,
           format: 'es',
@@ -44,12 +78,6 @@ export default process.env.BUILD === 'worker'
           format: 'es',
           sourcemap: true,
           plugins: [terser()],
-        },
-        {
-          file: `src/proxy/worker-source.ts`,
-          format: 'es',
-          sourcemap: false,
-          plugins: [stringifySourcePlugin(), terser()],
         },
       ],
       plugins: [
@@ -66,24 +94,20 @@ export default process.env.BUILD === 'worker'
         {
           file: `dist/bundle/${pkg.name}.js`,
           format: 'iife',
-          name: 'rbPhys2dThreaded',
+          name: bundleName,
           sourcemap: true,
-          globals: {
-            'rb-phys2d': 'rbPhys2d',
-          },
+          globals,
         },
         {
           file: `dist/bundle/${pkg.name}.min.js`,
           format: 'iife',
-          name: 'rbPhys2dThreaded',
+          name: bundleName,
           sourcemap: true,
           plugins: [terser()],
-          globals: {
-            'rb-phys2d': 'rbPhys2d',
-          },
+          globals,
         },
       ],
-      external: ['rb-phys2d'],
+      external: ['rb-phys2d', './worker-source'],
       plugins: [
         resolve(),
         commonjs(),

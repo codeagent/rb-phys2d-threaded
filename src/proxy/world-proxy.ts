@@ -226,7 +226,8 @@ export class WorldProxy implements WorldInterface {
         joint.minAngle,
         joint.maxAngle,
         joint.stiffness,
-        joint.damping
+        joint.damping,
+        jointDef.contacts
       ),
       [],
       (result: WorkerTaskResult<WorkerTask, number>) =>

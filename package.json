@@ -32,11 +32,11 @@
     "lint:check": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "build:clean": "npx rimraf dist",
+    "build:worker": "npx rollup -c --bundleConfigAsCjs --environment BUILD:worker",
     "build:esm": "npx tsc -p tsconfig.esm.json",
     "build:cjs": "npx tsc -p tsconfig.cjs.json",
     "build:types": "npx tsc -p tsconfig.types.json",
     "build:bundle": "npx rollup -c --bundleConfigAsCjs --environment BUILD:bundle",
-    "build:worker": "npx rollup -c --bundleConfigAsCjs --environment BUILD:worker",
     "prepare": "husky install"
   },
   "devDependencies": {
